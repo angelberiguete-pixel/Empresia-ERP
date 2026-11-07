@@ -1,0 +1,49 @@
+# Dolibarr language file - Source file is en_US - marges
+
+Margin=حاشیہ
+Margins=حاشیہ
+TotalMargin=ٹوٹل مارجن
+MarginOnProducts=مارجن / مصنوعات
+MarginOnServices=مارجن/سروسز
+MarginRate=مارجن کی شرح
+ModifyMarginRates=مارجن کی شرحوں میں ترمیم کریں۔
+MarkRate=مارک ریٹ
+DisplayMarginRates=مارجن کی شرحیں دکھائیں۔
+DisplayMarkRates=ڈسپلے مارک ریٹ
+InputPrice=ان پٹ کی قیمت
+margin=منافع کے مارجن کا انتظام
+margesSetup=منافع کے مارجن مینجمنٹ سیٹ اپ
+MarginDetails=مارجن کی تفصیلات
+ProductMargins=پروڈکٹ مارجنز
+CustomerMargins=کسٹمر مارجن
+SalesRepresentativeMargins=سیلز نمائندہ مارجنز
+ContactOfInvoice=رسید کا رابطہ
+UserMargins=صارف مارجن
+ProductService=پروڈکٹ یا سروس
+AllProducts=تمام مصنوعات اور خدمات
+ChooseProduct/Service=پروڈکٹ یا سروس کا انتخاب کریں۔
+ForceBuyingPriceIfNull=اگر وضاحت نہ کی گئی ہو تو خرید/قیمت کی قیمت کو فروخت کی قیمت پر مجبور کریں۔
+ForceBuyingPriceIfNullDetails=اگر ہم ایک نئی لائن کو شامل کرتے وقت خریدنا/قیمت کی قیمت فراہم نہیں کرتے ہیں، اور یہ اختیار "آن" ہے، تو نئی لائن پر مارجن 0%% ہوگا (خرید/قیمت قیمت = فروخت کی قیمت)۔ اگر یہ آپشن "آف" (تجویز کردہ) ہے، تو مارجن بطور ڈیفالٹ تجویز کردہ قدر کے برابر ہو گا (اور اگر کوئی ڈیفالٹ ویلیو نہیں مل سکتی ہے تو 100%% ہو سکتا ہے)۔
+MARGIN_METHODE_FOR_DISCOUNT=عالمی چھوٹ کے لیے مارجن کا طریقہ
+UseDiscountAsProduct=ایک مصنوعات کے طور پر
+UseDiscountAsService=خدمت کے طور پر
+UseDiscountOnTotal=ذیلی ٹوٹل پر
+MARGIN_METHODE_FOR_DISCOUNT_DETAILS=اس بات کی وضاحت کرتا ہے کہ کیا عالمی رعایت کو پروڈکٹ، سروس، یا مارجن کے حساب کے لیے صرف ذیلی ٹوٹل کے طور پر سمجھا جاتا ہے۔
+MARGIN_TYPE=مارجن کے حساب کتاب کے لیے بطور ڈیفالٹ تجویز کردہ خریدنا/قیمت کی قیمت
+MargeType1=بہترین وینڈر قیمت پر مارجن
+MargeType2=Margin on Weighted Average Cost (WAC)
+MargeType3=لاگت کی قیمت پر مارجن
+MarginTypeDesc=* Margin on best buying price = Selling price - Best vendor price defined on product card<br>* Margin on Weighted Average Cost (WAC) = Selling price - Product Weighted Average Price (WAP) or best vendor price if WAP not yet defined<br>* Margin on Cost price = Selling price - Cost price defined on product card or WAC if cost price not defined, or best vendor price if WAC not yet defined
+CostPrice=لاگت کی قیمت
+UnitCharges=یونٹ چارجز
+Charges=چارجز
+AgentContactType=تجارتی ایجنٹ کے رابطے کی قسم
+AgentContactTypeDetails=اس بات کی وضاحت کریں کہ کس رابطے کی قسم (انوائس پر منسلک) مارجن رپورٹ فی رابطہ/پتہ کے لیے استعمال کی جائے گی۔ نوٹ کریں کہ کسی رابطے کے اعداد و شمار پڑھنا قابل اعتماد نہیں ہے کیونکہ زیادہ تر معاملات میں انوائسز پر رابطے کی واضح وضاحت نہیں کی جا سکتی ہے۔
+rateMustBeNumeric=شرح ایک عددی قدر ہونی چاہیے۔
+markRateShouldBeLesserThan100=مارک کی شرح 100 سے کم ہونی چاہیے۔
+ShowMarginInfos=مارجن کی معلومات دکھائیں۔
+CheckMargins=مارجن کی تفصیل
+MarginPerSaleRepresentativeWarning=The report of margin per user use the link between third parties and sale representatives to calculate the margin of each sale representative. Because some thirdparties may not have any dedicated sale representative and some third parties may be linked to several, some amounts may not be included in this report (if there is no sale representative) and some may appear on different lines (for each sale representative).
+MarginUpdateLinkedBuyingPrice=Suggest to propagate the cost price modified on a line to all the lines of the linked proposals, orders and invoices that has the same product (users will decide yes or no at eachmodification)
+UpdateLinkedBuyingPrice=Update the cost price on all lines (with the same product) of the linked documents
+UpdateLinkedBuyingPriceQuestion=The cost price of this line has changed. Apply it to the lines of the linked documents that has the same product ?

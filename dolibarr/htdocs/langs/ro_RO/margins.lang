@@ -1,0 +1,49 @@
+# Dolibarr language file - Source file is en_US - marges
+
+Margin=Marjă
+Margins=Marje
+TotalMargin=Total Marjă
+MarginOnProducts=Marjă / Produse
+MarginOnServices=Marjă / Servicii
+MarginRate=Cotă Marjă
+ModifyMarginRates=Modificare marje
+MarkRate=Cotă marcă
+DisplayMarginRates=Afişează cotă marjă
+DisplayMarkRates=Afişează cotă marcă
+InputPrice=Preţ intrare
+margin=Management marje profit
+margesSetup=Configurare Management marje profit
+MarginDetails=Detalii marjă
+ProductMargins=Marjă Produs
+CustomerMargins=Marje Client
+SalesRepresentativeMargins=Marje Reprezentanţi vănzări
+ContactOfInvoice=Contact pentru factură
+UserMargins=Marje Utilizator
+ProductService=Produs sau serviciu
+AllProducts=Toate produsele şi serviciile
+ChooseProduct/Service=Alege produs sau serviciu
+ForceBuyingPriceIfNull=Forțaţi prețul de achiziţie/de cost la prețul de vânzare, dacă nu este definit
+ForceBuyingPriceIfNullDetails=Dacă prețul de achiziţie/cost nu este furnizat atunci când adăugăm o linie nouă, iar această opțiune este "ACTIVATĂ", marja va fi 0 %% pe noua linie (preț de achiziţie/cost = preț de vânzare). Dacă această opțiune este "DEZACTIVATĂ" (recomandat), marja va fi egală cu valoarea implicită (și poate fi 100 %% dacă nu se găsește nicio valoare implicită).
+MARGIN_METHODE_FOR_DISCOUNT=Metoda de marjă pentru reduceri globale
+UseDiscountAsProduct=Ca produs
+UseDiscountAsService=Ca serviciu
+UseDiscountOnTotal=Pe subtotal
+MARGIN_METHODE_FOR_DISCOUNT_DETAILS=Definiţi dacă discount-ul global e tratat ca un produs, serviciu, sau numai pe total la calcularea marjei.
+MARGIN_TYPE=Prețul de achiziţie/cost sugerat implicit pentru calcularea marjei
+MargeType1=Marja la prețul cel mai bun al furnizororului
+MargeType2=Marjă pe Cost mediu Ponderat (CMP)
+MargeType3=Marja pe prețul de cost
+MarginTypeDesc=* Marja pe cel mai bun preț de cumpărare = Preț de vânzare - Cel mai bun preț de achiziție furnizor definit pe cardul Produs<br>* Marja pe costul mediu ponderat (CMP) = Preț de vânzare - Preț mediu ponderat produs (PMP) sau cel mai bun preț de achiziție furnizor dacă PMP nu este încă definit<br>* Marja pe preț de cost = Preț de vânzare - Preț de cost definit pe cardul Produs sau CMP dacă prețul de cost nu este definit, sau cel mai bun preț de achiziție furnizor nu este încă definit dacă CMP nu a fost definit încă
+CostPrice=Preţ de cost
+UnitCharges=Cheltuieli unitare
+Charges=Cheltuieli
+AgentContactType=Tip contact agent comercial
+AgentContactTypeDetails=Definește ce tip de contact (asociat la facturi) va fi utilizat pentru raportul de marjă per contact/adresă. Reține că citirea statisticilor despre un contact nu este de încredere, deoarece în majoritatea cazurilor este posibil ca contactul să nu fie definit în mod explicit pe facturi.
+rateMustBeNumeric=Cota trebuie să fie numerică
+markRateShouldBeLesserThan100=Cota mărcii trebuie să fie mai mică de 100
+ShowMarginInfos=Arată informaţii marjă
+CheckMargins=Detaliu marjă
+MarginPerSaleRepresentativeWarning=Raportul privind marja per utilizator utilizează legătura dintre terți și reprezentanții de vânzări pentru a calcula marja fiecărui reprezentant de vânzări. Deoarece este posibil ca unii terți să nu aibă un reprezentant de vânzări dedicat, iar alții să fie legați de mai mulți, este posibil ca unele sume să nu fie incluse în acest raport (dacă nu există un reprezentant de vânzări), iar altele să apară pe linii diferite (pentru fiecare reprezentant de vânzări).
+MarginUpdateLinkedBuyingPrice=Suggest to propagate the cost price modified on a line to all the lines of the linked proposals, orders and invoices that has the same product (users will decide yes or no at eachmodification)
+UpdateLinkedBuyingPrice=Update the cost price on all lines (with the same product) of the linked documents
+UpdateLinkedBuyingPriceQuestion=The cost price of this line has changed. Apply it to the lines of the linked documents that has the same product ?
