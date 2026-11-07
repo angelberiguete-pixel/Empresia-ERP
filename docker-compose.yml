@@ -1,0 +1,53 @@
+name: empresia-erp
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
+      MYSQL_DATABASE: "${DB_NAME:-empresia}"
+      MYSQL_USER: "${DB_USER:-empresia}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:?Set DB_PASSWORD in .env}"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 15s
+      timeout: 10s
+      retries: 15
+    networks: [backend]
+
+  dolibarr:
+    image: "${DOLIBARR_IMAGE:-dolibarr/dolibarr:latest}"
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      DOLI_INSTALL_AUTO: "1"
+      DOLI_INIT_DEMO: "0"
+      DOLI_DB_HOST: mariadb
+      DOLI_DB_TYPE: mysqli
+      DOLI_DB_NAME: "${DB_NAME:-empresia}"
+      DOLI_DB_USER: "${DB_USER:-empresia}"
+      DOLI_DB_PASSWORD: "${DB_PASSWORD:?Set DB_PASSWORD in .env}"
+      DOLI_URL_ROOT: "${DOLI_URL_ROOT:-http://localhost:8080}"
+      DOLI_ADMIN_LOGIN: "${DOLI_ADMIN_LOGIN:-empresiaadmin}"
+      DOLI_ADMIN_PASSWORD: "${DOLI_ADMIN_PASSWORD:?Set DOLI_ADMIN_PASSWORD in .env}"
+      DOLI_COMPANY_NAME: Empresia
+      DOLI_CRON: "0"
+      DOLI_INSTANCE_UNIQUE_ID: "${DOLI_INSTANCE_UNIQUE_ID:?Set DOLI_INSTANCE_UNIQUE_ID in .env}"
+    ports:
+      - "127.0.0.1:${DOLI_HOST_PORT:-8080}:80"
+    volumes:
+      - dolibarr_documents:/var/www/documents
+      - dolibarr_custom:/var/www/html/custom
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  mariadb_data:
+  dolibarr_documents:
+  dolibarr_custom:
