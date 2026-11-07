@@ -1,0 +1,25 @@
+name: Check Empresia PHP module
+on:
+  push:
+    branches: [feat/empresia-business-diagnostics-20261107]
+    paths:
+      - 'dolibarr/htdocs/custom/empresiaaudit/**'
+      - '.github/workflows/check-empresiaaudit.yml'
+  pull_request:
+    paths:
+      - 'dolibarr/htdocs/custom/empresiaaudit/**'
+      - '.github/workflows/check-empresiaaudit.yml'
+permissions:
+  contents: read
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax
+        run: |
+          php -l dolibarr/htdocs/custom/empresiaaudit/index.php
+          php -l dolibarr/htdocs/custom/empresiaaudit/core/modules/modEmpresiaAudit.class.php
+      - name: Ensure no privileged no-login mode
+        run: |
+          ! grep -R -E "^define\\('NOLOGIN'|^define\\('NOREQUIREDB'" dolibarr/htdocs/custom/empresiaaudit --include='*.php'
