@@ -1,26 +1,23 @@
 # Empresia ERP
 
-ERP independiente basado en Odoo Community, con personalizaciones propias para empresas de República Dominicana.
+Plataforma empresarial en desarrollo. El código fuente de **Dolibarr ERP & CRM** fue importado en `dolibarr/` (commit `1a9e127`), conservando su licencia y avisos originales.
 
-## Estado
+## Estado real
 
-**Preparación inicial.** El código de Odoo aún no se ha importado, instalado ni desplegado. No usar en producción.
+- ✅ Fuentes upstream de Dolibarr importadas en `dolibarr/`.
+- ✅ Configuración inicial de Docker Compose (rama de staging).
+- ⏳ Dolibarr aún no ha sido probado en ejecución en un servidor.
+- ⏳ Sin despliegue público ni pruebas end-to-end.
+- ⏳ La identidad Empresia, diagnósticos, IA e integraciones aún requieren desarrollo.
 
-## Origen
+## Instalación para pruebas
 
-- Upstream: https://github.com/odoo/odoo
-- Versión objetivo inicial: rama estable 19.0 (validar compatibilidad y dependencias antes de importar).
-- Mantener los avisos de copyright, la licencia original y las licencias individuales de los módulos.
+Ver [docs/INSTALLATION.md](docs/INSTALLATION.md). El compose inicial usa la **imagen oficial** de Dolibarr (no compila la carpeta fuente importada) y MariaDB con volúmenes persistentes, para verificar el funcionamiento base antes de personalizarlo.
 
-## Objetivo de primera fase
+## Arquitectura prevista
 
-1. Importar el código completo de Odoo Community preservando su licencia.
-2. Preparar PostgreSQL y entorno de ejecución reproducible.
-3. Arrancar Odoo y verificar autenticación y módulos base.
-4. Incorporar módulos personalizados de Empresia en directorio independiente.
-5. Añadir pruebas de aislamiento entre empresas, permisos y auditoría.
-6. Preparar despliegue de staging en un servidor compatible con procesos Python persistentes.
+Dolibarr proveerá el motor ERP. Los módulos propios de Empresia se construirán mediante puntos de extensión y servicios separados. No se pretende mezclar código de Odoo con el de Dolibarr.
 
-## Nota de seguridad
+## Seguridad y licencias
 
-No incluir credenciales, datos reales de clientes ni secretos en Git. El repositorio es actualmente público; revisar visibilidad antes de incorporar desarrollos privados.
+No subas secretos a Git; revisa las licencias GPL del código y de los módulos antes de redistribuirlos. El entorno de prueba no debe usar datos reales de clientes hasta comprobar autenticación, permisos y aislamiento. No asumir que la facturación estándar cumple los requisitos fiscales electrónicos de República Dominicana sin implementación y validación específicas.
