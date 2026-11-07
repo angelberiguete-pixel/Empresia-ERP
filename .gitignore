@@ -1,0 +1,8 @@
+# Local credentials and database dumps
+.env
+.env.*
+!.env.example
+*.sql
+*.sql.gz
+backups/
+.volumes/
