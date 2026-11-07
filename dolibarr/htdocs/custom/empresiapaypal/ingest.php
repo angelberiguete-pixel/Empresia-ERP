@@ -22,6 +22,9 @@ function empresiaReply($status, $payload)
     echo json_encode($payload);
     exit;
 }
+if (!function_exists('isModEnabled') || !isModEnabled('empresiapaypal')) {
+    empresiaReply(503, array('error' => 'Empresia PayPal module inactive'));
+}
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     empresiaReply(405, array('error' => 'Method not allowed'));
