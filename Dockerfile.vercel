@@ -1,0 +1,7 @@
+# Vercel Container Function build entrypoint.
+# Uses the official Dolibarr runtime. NO database or persistent files are bundled.
+# Dolibarr is NOT usable as an ERP until dedicated database, durable documents,
+# administrator secrets, and first-boot initialization are configured.
+FROM dolibarr/dolibarr:latest
+ENV DOLI_CRON=0
+EXPOSE 80
