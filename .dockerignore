@@ -1,0 +1,4 @@
+# The Vercel image is based on the published upstream container image.
+# Avoid uploading huge source trees and local secrets into Docker build context.
+**
+!Dockerfile.vercel
