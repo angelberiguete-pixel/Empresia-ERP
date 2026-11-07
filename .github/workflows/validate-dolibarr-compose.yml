@@ -1,0 +1,26 @@
+name: Validate Empresia Docker configuration
+on:
+  push:
+    branches:
+      - feat/dolibarr-docker-staging-20261106
+    paths:
+      - 'docker-compose.yml'
+      - '.env.example'
+      - '.github/workflows/validate-dolibarr-compose.yml'
+  pull_request:
+    paths:
+      - 'docker-compose.yml'
+      - '.env.example'
+      - '.github/workflows/validate-dolibarr-compose.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose syntax without starting services
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
+          rm .env
