@@ -1,0 +1,74 @@
+name: Empresia ERP Docker boot proof
+on:
+  pull_request:
+    paths:
+      - 'docker-compose.yml'
+      - '.env.example'
+      - 'docs/INSTALLATION.md'
+      - '.github/workflows/dolibarr-boot-smoke.yml'
+  push:
+    branches:
+      - 'test/dolibarr-docker-staging-20261109'
+jobs:
+  boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate ephemeral staging secrets (not logged)
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          {
+            printf 'DB_NAME=empresia_ci\nDB_USER=empresia_ci\n'
+            printf 'DB_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+            printf 'DOLI_ADMIN_LOGIN=empresia_ci_admin\n'
+            printf 'DOLI_ADMIN_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+            printf 'DOLI_INSTANCE_UNIQUE_ID=%s\n' "$(openssl rand -hex 24)"
+            printf 'DOLI_URL_ROOT=http://localhost:8080\nDOLI_HOST_PORT=8080\n'
+            printf 'DOLIBARR_IMAGE=dolibarr/dolibarr:latest\n'
+          } > .env
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+      - name: Start official Dolibarr and MariaDB with ephemeral persistent volumes
+        run: docker compose up -d --wait --wait-timeout 300
+      - name: Verify real local web service without customer data
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for i in $(seq 1 55); do
+            if curl --silent --show-error --fail --location --max-time 5 \
+              -o /dev/null http://127.0.0.1:8080/ 2>/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 4
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "FAIL: Dolibarr web service did not become reachable."
+            docker compose ps
+            exit 1
+          fi
+          echo "PASS: real Dolibarr container and MariaDB are responding locally."
+          docker compose ps
+      - name: Verify service survives restart without erasing volumes
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker compose restart dolibarr
+          ready=0
+          for i in $(seq 1 30); do
+            if curl --silent --show-error --fail --location --max-time 5 \
+              -o /dev/null http://127.0.0.1:8080/ 2>/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 4
+          done
+          test "$ready" -eq 1
+          echo "PASS: ERP web service recovered after a container restart."
+      - name: Stop without deleting volumes
+        if: always()
+        run: docker compose down || true
