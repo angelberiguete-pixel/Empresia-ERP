@@ -1,0 +1,17 @@
+name: Empresia PayPal module checks
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dolibarr/htdocs/custom/empresiapaypal/**'
+      - '.github/workflows/empresia-paypal-checks.yml'
+  workflow_dispatch:
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check receiver PHP syntax
+        run: php -l dolibarr/htdocs/custom/empresiapaypal/ingest.php
+      - name: Check Dolibarr module descriptor PHP syntax
+        run: php -l dolibarr/htdocs/custom/empresiapaypal/core/modules/modEmpresiaPayPal.class.php
