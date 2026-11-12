@@ -28,11 +28,22 @@ jobs:
             printf 'DOLI_INSTANCE_UNIQUE_ID=%s\n' "$(openssl rand -hex 24)"
             printf 'DOLI_URL_ROOT=http://localhost:8080\nDOLI_HOST_PORT=8080\n'
             printf 'DOLIBARR_IMAGE=dolibarr/dolibarr:latest\n'
+            printf 'ODOO_DB_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+            printf 'ODOO_IMAGE=odoo:20.0-20261102\nODOO_HOST_PORT=8069\n'
           } > .env
       - name: Validate Docker Compose
         run: docker compose config --quiet
-      - name: Start official Dolibarr and MariaDB with ephemeral persistent volumes
+      - name: Start official Odoo and Dolibarr with their isolated databases and volumes
         run: docker compose up -d --wait --wait-timeout 300
+      - name: Initialize the empty Odoo 20 database exactly once
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A fresh Postgres database has no Odoo registry until "base" is installed.
+          # Ephemeral CI secrets only. Never run this against production data.
+          docker compose run --rm --no-deps odoo \
+            --database empresia_odoo --init base --stop-after-init --without-demo=all
+          docker compose restart odoo
       - name: Verify real local web service without customer data
         shell: bash
         run: |
@@ -53,6 +64,26 @@ jobs:
           fi
           echo "PASS: real Dolibarr container and MariaDB are responding locally."
           docker compose ps
+      - name: Verify real Odoo HTTP endpoint without customer data
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for i in $(seq 1 60); do
+            if curl --silent --show-error --fail --max-time 5 \
+              -o /dev/null http://127.0.0.1:8069/web/version 2>/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 4
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "FAIL: Odoo 20 did not expose its web version endpoint."
+            docker compose ps
+            docker compose logs --tail 75 odoo
+            exit 1
+          fi
+          echo "PASS: Odoo 20 runtime is answering from isolated PostgreSQL-backed container."
       - name: Verify service survives restart without erasing volumes
         shell: bash
         run: |

@@ -1,0 +1,36 @@
+name: Dual ERP Compose validation
+
+on:
+  pull_request:
+    paths:
+      - 'docker-compose.yml'
+      - '.env.example'
+      - '.github/workflows/dual-erp-compose.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compose-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate isolated Odoo and Dolibarr stacks
+        run: |
+          set -eu
+          test -f .env.example
+          cp .env.example .env
+          docker compose --env-file .env config --quiet
+          docker compose --env-file .env config --services | grep -Fx odoo
+          docker compose --env-file .env config --services | grep -Fx odoo-postgres
+          docker compose --env-file .env config --services | grep -Fx dolibarr
+          docker compose --env-file .env config --services | grep -Fx mariadb
+          # No public database bindings.
+          if grep -Eq '^[[:space:]]+-[[:space:]]*["\x27]?[0-9]+:5432|^[[:space:]]+-[[:space:]]*["\x27]?[0-9]+:3306' docker-compose.yml; then
+            echo 'Public database port detected'; exit 1
+          fi
+          rm -f .env
