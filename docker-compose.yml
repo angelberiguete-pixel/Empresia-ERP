@@ -17,6 +17,42 @@ services:
       retries: 15
     networks: [backend]
 
+  # Odoo Community 20 uses its OWN PostgreSQL. Never point this at Supabase.
+  odoo-postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "empresia_odoo"
+      POSTGRES_USER: "odoo"
+      POSTGRES_PASSWORD: "${ODOO_DB_PASSWORD:?Set ODOO_DB_PASSWORD in .env}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d empresia_odoo"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - odoo_postgres_data:/var/lib/postgresql/data
+    networks: [backend]
+
+  odoo:
+    # Pinned Docker Official Image supported for Odoo 20, updated deliberately.
+    image: "${ODOO_IMAGE:-odoo:20.0-20261102}"
+    restart: unless-stopped
+    depends_on:
+      odoo-postgres:
+        condition: service_healthy
+    environment:
+      HOST: odoo-postgres
+      PORT: "5432"
+      USER: odoo
+      PASSWORD: "${ODOO_DB_PASSWORD:?Set ODOO_DB_PASSWORD in .env}"
+    ports:
+      # Local-only until HTTPS reverse proxy, SSO and DB-manager hardening are verified.
+      - "127.0.0.1:${ODOO_HOST_PORT:-8069}:8069"
+    volumes:
+      - odoo_filestore:/var/lib/odoo
+    networks: [backend]
+
   dolibarr:
     image: "${DOLIBARR_IMAGE:-dolibarr/dolibarr:latest}"
     restart: unless-stopped
@@ -51,3 +87,5 @@ volumes:
   mariadb_data:
   dolibarr_documents:
   dolibarr_custom:
+  odoo_postgres_data:
+  odoo_filestore:
