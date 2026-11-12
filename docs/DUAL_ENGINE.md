@@ -31,6 +31,10 @@ cp .env.example .env
 docker compose --env-file .env config --quiet
 docker compose --env-file .env pull
 docker compose --env-file .env up -d
+# FIRST INSTALL ONLY, while the Odoo database is still empty:
+docker compose --env-file .env run --rm --no-deps odoo \
+  --database empresia_odoo --init base --stop-after-init --without-demo=all
+docker compose --env-file .env restart odoo
 docker compose ps
 docker compose logs --tail=80 odoo dolibarr
 ```
@@ -39,7 +43,7 @@ Local endpoints after healthy startup:
 - Dolibarr: http://127.0.0.1:8080
 - Odoo: http://127.0.0.1:8069
 
-At first install, configure the Odoo database `empresia_odoo` with the module dependencies actually required; ensure the database manager and initial admin password are hardened. Enable only **read-only integration credentials** for Odoo and Dolibarr initially.
+At first install, initialize the Odoo database `empresia_odoo` with the one-shot command above (otherwise /web/version returns HTTP 500). Then install the module dependencies actually required; ensure the database manager and initial admin password are hardened. Enable only **read-only integration credentials** for Odoo and Dolibarr initially.
 
 ## Functional acceptance before connecting Empresa customers
 
