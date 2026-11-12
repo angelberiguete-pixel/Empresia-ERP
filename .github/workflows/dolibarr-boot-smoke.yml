@@ -35,6 +35,15 @@ jobs:
         run: docker compose config --quiet
       - name: Start official Odoo and Dolibarr with their isolated databases and volumes
         run: docker compose up -d --wait --wait-timeout 300
+      - name: Initialize the empty Odoo 20 database exactly once
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A fresh Postgres database has no Odoo registry until "base" is installed.
+          # Ephemeral CI secrets only. Never run this against production data.
+          docker compose run --rm --no-deps odoo \
+            --database empresia_odoo --init base --stop-after-init --without-demo=all
+          docker compose restart odoo
       - name: Verify real local web service without customer data
         shell: bash
         run: |
